@@ -16,6 +16,9 @@ namespace RPSurvey3.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _db;
 
+        [TempData]
+        public string StatusMessage { get; set; }
+
         public SubSectionController(ApplicationDbContext db)
         {
             _db = db;
@@ -121,7 +124,7 @@ namespace RPSurvey3.Areas.Admin.Controllers
                 if (doesSubSectionExists.Count() > 0)
                 {
                     //Error
-                    //StatusMessage = "Error : Sub Section exists under " + doesSubSectionExists.First().Section.Name + " category. Please use another name.";
+                    StatusMessage = "Error : SubSection exists under " + doesSubSectionExists.First().Section.Name + " category. Please use another name.";
                 }
                 else
                 {
@@ -137,7 +140,7 @@ namespace RPSurvey3.Areas.Admin.Controllers
                 SectionList = await _db.Section.ToListAsync(),
                 SubSection = model.SubSection,
                 SubSectionList = await _db.SubSection.OrderBy(p => p.Name).Select(p => p.Name).ToListAsync(),
-                // StatusMessage = StatusMessage
+                StatusMessage = StatusMessage
             };
             //modelVM.SubSection.Id = id;
             return View(modelVM);

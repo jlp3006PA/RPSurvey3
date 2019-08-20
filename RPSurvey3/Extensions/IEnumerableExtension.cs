@@ -10,6 +10,7 @@ namespace RPSurvey3.Extensions
     {
         public static IEnumerable<SelectListItem> ToSelectListItem<T>(this IEnumerable<T> items, int selectedValue)
         {
+            // LINQ statement to select object items from both.
             return from item in items
                    select new SelectListItem
                    {
