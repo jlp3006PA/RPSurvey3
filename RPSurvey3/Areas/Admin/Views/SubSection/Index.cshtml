@@ -39,6 +39,9 @@
                             @Html.DisplayFor(m => item.Name)
                         </td>
                         <td>
+                            @Html.DisplayFor(m => item.Section.Name)
+                        </td>
+                        <td>
                             <partial name="_TableButtonPartial" model="item.Id" />
                         </td>
                     </tr>

@@ -57,7 +57,7 @@ namespace RPSurvey3.Areas.Admin.Controllers
                 if (doesSubSectionExists.Count() > 0)
                 {
                     //Error
-                    //StatusMessage = "Error : Sub Section exists under " + doesSubSectionExists.First().Section.Name + " category. Please use another name.";
+                    StatusMessage = "Error : Sub Section exists under " + doesSubSectionExists.First().Section.Name + " section. Please use another name.";
                 }
                 else
                 {
@@ -71,7 +71,7 @@ namespace RPSurvey3.Areas.Admin.Controllers
                 SectionList = await _db.Section.ToListAsync(),
                 SubSection = model.SubSection,
                 SubSectionList = await _db.SubSection.OrderBy(p => p.Name).Select(p => p.Name).ToListAsync(),
-                //StatusMessage = StatusMessage
+                StatusMessage = StatusMessage
             };
             return View(modelVM);
         }
@@ -124,7 +124,7 @@ namespace RPSurvey3.Areas.Admin.Controllers
                 if (doesSubSectionExists.Count() > 0)
                 {
                     //Error
-                    StatusMessage = "Error : SubSection exists under " + doesSubSectionExists.First().Section.Name + " category. Please use another name.";
+                    StatusMessage = "Error : SubSection exists under " + doesSubSectionExists.First().Section.Name + " section. Please use another name.";
                 }
                 else
                 {

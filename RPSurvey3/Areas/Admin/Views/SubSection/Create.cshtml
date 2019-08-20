@@ -6,14 +6,15 @@
 }
 
 <h1>Create SubSections</h1>
-
 <br />
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
 
 <div class="border backgroundWhite row">
     <div class="col-8 border-right">
 
         <form asp-action="Create">
-            <div class="border backgroundWhite ">
+            <div>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group row">
                     <div class="col-3">
@@ -57,13 +58,13 @@
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
-        function updateSubCategoryList() {
-            var categorySelected = document.getElementById("ddlCategorylist").value;
+        function updateSubSectionList() {
+            var sectionSelected = document.getElementById("ddlSectionList").value;
 
-            $list = $('#SubCategoryList');
+            $list = $('#SubSectionList');
 
             $.ajax({
-                url: '/Admin/SubCategory/GetSubCategory/' + categorySelected,
+                url: '/Admin/SubSection/GetSubSection/' + sectionSelected,
                 type: 'GET',
                 dataType: 'text',
                 success: function (data) {
@@ -81,11 +82,11 @@
         }
 
         $(document).ready(function () {
-            updateSubCategoryList();
+            updateSubSectionList();
         });
 
-        $("#ddlCategorylist").on("change", function () {
-            updateSubCategoryList();
+        $("#ddlSectionlist").on("change", function () {
+            updateSubSectionList();
         });</script>
 
 }
