@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using RPSurvey3.Models;
 
 namespace RPSurvey3.Data
 {
@@ -12,5 +13,8 @@ namespace RPSurvey3.Data
             : base(options)
         {
         }
+
+        public DbSet<Section> Section { get; set; }
+        public DbSet<SubSection> SubSection { get; set; }
     }
 }

@@ -1,0 +1,52 @@
+﻿@model RPSurvey3.Models.ViewModels.SubSectionAndSectionViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create SubSections</h1>
+
+<br />
+
+<div class="border backgroundWhite">
+    <div class="col-8 border-right">
+
+        <form asp-action="Create">
+            <div class="border backgroundWhite">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="SubSection.SectionId" class="col-form-label"></label>
+                    </div>
+                    <div class="col-5">
+                        <select id="ddlSectionList" asp-for="SubSection.SectionId" asp-items="Model.SectionList.ToSelectListItem(Model.SubSection.SectionId)" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="SubSection.Name" class="col-form-label-lg"></label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="SubSection.Name" class="form-control" />
+                    </div>
+                    <span asp-validation-for="SubSection.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-5 offset-3">
+                        <partial name="_CreateAndBackToListButton" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-3 offset-1">
+        @if (Model.SubSectionList.Count() > 0)
+        {
+            <p> Existing SubSections</p>
+            <div id="SubSectionList">
+                <ul class="list-group">
+                </ul>
+            </div>
+        }
+    </div>
+</div>
