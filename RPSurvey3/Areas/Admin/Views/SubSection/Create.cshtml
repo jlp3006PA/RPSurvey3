@@ -3,52 +3,50 @@
 
 @{
     ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create SubSections</h1>
+<br />
+<h2 class="text-info">Create Sub Section</h2>
 <br />
 
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 
 <div class="border backgroundWhite row">
     <div class="col-8 border-right">
-
         <form asp-action="Create">
-            <div>
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group row">
-                    <div class="col-3">
-                        <label asp-for="SubSection.SectionId" class="col-form-label"></label>
-                    </div>
-                    <div class="col-5">
-                        <select id="ddlSectionList" asp-for="SubSection.SectionId" asp-items="Model.SectionList.ToSelectListItem(Model.SubSection.SectionId)" class="form-control"></select>
-                    </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group row">
+                <div class="col-3">
+                    <label asp-for="SubSection.SectionId" class="col-form-label"></label>
                 </div>
-                <div class="form-group row">
-                    <div class="col-3">
-                        <label asp-for="SubSection.Name" class="col-form-label"></label>
-                    </div>
-                    <div class="col-5">
-                        <input asp-for="SubSection.Name" class="form-control" />
-                    </div>
-                    <span asp-validation-for="SubSection.Name" class="text-danger"></span>
+                <div class="col-5">
+                    <select id="ddlSectionlist" asp-for="SubSection.SectionId" asp-items="Model.SectionList.ToSelectListItem(Model.SubSection.SectionId)" class="form-control"></select>
                 </div>
-                <div class="form-group row">
-                    <div class="col-5 offset-3">
-                        <partial name="_CreateAndBackToListButton" />
-                    </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-3">
+                    <label asp-for="SubSection.Name" class="col-form-label"></label>
+                </div>
+                <div class="col-5">
+                    <input asp-for="SubSection.Name" class="form-control" />
+                </div>
+                <span asp-validation-for="SubSection.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-5 offset-3">
+                    <partial name="_CreateAndBackToListButton" />
                 </div>
             </div>
         </form>
     </div>
-
     <div class="col-3 offset-1">
         @if (Model.SubSectionList.Count() > 0)
         {
-            <p> Existing SubSections</p>
+            <p> Existing Subcategories: </p>
+
             <div id="SubSectionList">
-                <ul class="list-group">
-                </ul>
+                <ul class="list-group"></ul>
             </div>
         }
     </div>
@@ -58,8 +56,9 @@
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
+
         function updateSubSectionList() {
-            var sectionSelected = document.getElementById("ddlSectionList").value;
+            var sectionSelected = document.getElementById("ddlSectionlist").value;
 
             $list = $('#SubSectionList');
 
@@ -87,6 +86,7 @@
 
         $("#ddlSectionlist").on("change", function () {
             updateSubSectionList();
-        });</script>
+        });
+    </script>
 
 }

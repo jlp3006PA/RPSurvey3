@@ -1,0 +1,91 @@
+﻿@model RPSurvey3.Models.ViewModels.SubSectionAndSectionViewModel
+@using RPSurvey3.Extensions
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<h2 class="text-info">Edit Sub Section</h2>
+<br />
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<div class="border backgroundWhite row">
+    <div class="col-8 border-right">
+        <form asp-action="Edit">
+
+            <input type="hidden" asp-for="SubSection.SectionId" />
+
+            @*<input type="hidden" asp-for="SubSection.Id" />*@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group row">
+                <div class="col-3">
+                    <label asp-for="SubSection.SectionId" class="col-form-label"></label>
+                </div>
+                <div class="col-5">
+                    <select id="ddlSectionlist" asp-for="SubSection.SectionId" disabled asp-items="Model.SectionList.ToSelectListItem(Model.SubSection.SectionId)" class="form-control"></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-3">
+                    <label asp-for="SubSection.Name" class="col-form-label"></label>
+                </div>
+                <div class="col-5">
+                    <input asp-for="SubSection.Name" class="form-control" />
+                </div>
+                <span asp-validation-for="SubSection.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-5 offset-3">
+                    <partial name="_EditAndBackToListButton" model="Model.SubSection.Id" />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-3 offset-1">
+        @if (Model.SubSectionList.Count() > 0)
+        {
+            <p> Existing SubSections</p>
+            <div id="SubSectionList">
+                <ul class="list-group">
+                </ul>
+            </div>
+        }
+    </div>
+
+    @section Scripts{
+        @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+        <script>
+
+            function updateSubSectionList() {
+                var SectionSelected = document.getElementById("ddlSectionlist").value;
+
+                $list = $('#SubSectionList');
+
+                $.ajax({
+                    url: '/Admin/SubSection/GetSubSection/' + sectionSelected,
+                    type: 'GET',
+                    dataType: 'text',
+                    success: function (data) {
+                        results = JSON.parse(data);
+                        $list.html('');
+                        $list.append(' <ul class="list-group"> ');
+                        for (i in results) {
+                            $list.append('<li class="list-group-item">' + results[i].text + '</li>');
+                        }
+                        $list.append('</ul>');
+                    }
+
+                });
+
+            }
+
+            $(document).ready(function () {
+                updateSubSectionList();
+            });
+        </script>
+
+    }

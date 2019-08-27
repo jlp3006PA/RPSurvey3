@@ -79,12 +79,12 @@ namespace RPSurvey3.Areas.Admin.Controllers
         [ActionName("GetSubSection")]
         public async Task<IActionResult> GetSubSection(int id)
         {
-            List<SubSection> subCategories = new List<SubSection>();
+            List<SubSection> subSection = new List<SubSection>();
 
-            subCategories = await (from SubSection in _db.SubSection
-                                   where SubSection.SectionId == id
-                                   select SubSection).ToListAsync();
-            return Json(new SelectList(subCategories, "Id", "Name"));
+            subSection = await (from SubSection in _db.SubSection
+                                where SubSection.SectionId == id
+                                select SubSection).ToListAsync();
+            return Json(new SelectList(subSection, "Id", "Name"));
         }
 
         //GET - EDIT
@@ -95,9 +95,9 @@ namespace RPSurvey3.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var SubSection = await _db.SubSection.SingleOrDefaultAsync(m => m.Id == id);
+            var subSection = await _db.SubSection.SingleOrDefaultAsync(m => m.Id == id);
 
-            if (SubSection == null)
+            if (subSection == null)
             {
                 return NotFound();
             }
@@ -105,7 +105,7 @@ namespace RPSurvey3.Areas.Admin.Controllers
             SubSectionAndSectionViewModel model = new SubSectionAndSectionViewModel()
             {
                 SectionList = await _db.Section.ToListAsync(),
-                SubSection = SubSection,
+                SubSection = subSection,
                 SubSectionList = await _db.SubSection.OrderBy(p => p.Name).Select(p => p.Name).Distinct().ToListAsync()
             };
 
@@ -115,7 +115,7 @@ namespace RPSurvey3.Areas.Admin.Controllers
         //POST - EDIT
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(SubSectionAndSectionViewModel model)
+        public async Task<IActionResult> Edit(int id, SubSectionAndSectionViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -128,8 +128,8 @@ namespace RPSurvey3.Areas.Admin.Controllers
                 }
                 else
                 {
-                    var subCatFromDb = await _db.SubSection.FindAsync(model.SubSection.Id);
-                    subCatFromDb.Name = model.SubSection.Name;
+                    var subSecFromDb = await _db.SubSection.FindAsync(model.SubSection.Id);
+                    subSecFromDb.Name = model.SubSection.Name;
 
                     await _db.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -142,7 +142,7 @@ namespace RPSurvey3.Areas.Admin.Controllers
                 SubSectionList = await _db.SubSection.OrderBy(p => p.Name).Select(p => p.Name).ToListAsync(),
                 StatusMessage = StatusMessage
             };
-            //modelVM.SubSection.Id = id;
+            // modelVM.SubSection.Id = id;
             return View(modelVM);
         }
 
