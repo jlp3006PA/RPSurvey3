@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Question>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+<div class="container border backgroundWhite">
+
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-info">Survey Question List</h2>
+        </div>
+        <div class="col-6 text-right">
+            <partial name="_CreateButtonPartial" />
+        </div>
+    </div>
+    <br />
+    <div>
+        @if (Model.Count() > 0)
+        {
+            <table class="table table-striped border">
+                <tr class="table-secondary">
+
+                    <br />
+                    <div class="container border backgroundWhite">
+
+                        <div class="row">
+                            <div class="col-6">
+                                <h2 class="text-info"> Section List</h2>
+                            </div>
+                            <div class="col-6 text-right">
+                                <partial name="_CreateButtonPartial" />
+                            </div>
+                        </div>
+                        <br />
+                        <div>
+                            @if (Model.Count() > 0)
+                            {
+                                <table class="table table-striped border">
+                                    <tr class="table-secondary">
+                                        <th>
+                                            @Html.DisplayNameFor(m => m.SurveyQuestion)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(m => m.SectionId)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(m => m.SubSectionId)
+                                        </th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(m => item.SurveyQuestion)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(m => item.Section)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(m => item.SubSection)
+                                            </td>
+                                            <td>
+                                                <partial name="_TableButtonPartial" model="item.Id" />
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            }
+                            else
+                            {
+                                <p>No Questions items in database...</p>
+                            }
+                        </div>
+                    </div>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(m => item.SurveyQuestion)
+                        </td>
+                        <td>
+                            <partial name="_TableButtonPartial" model="item.Id" />
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <p>No Section items in database...</p>
+        }
+    </div>
+</div>
