@@ -13,7 +13,7 @@ namespace RPSurvey3.Models
 
         [Required]
         [MaxLength(255)]
-        [Display]
+        //[Display(Name = "Survey Question")]
         public string SurveyQuestion { get; set; }
 
         public int Response { get; set; }
