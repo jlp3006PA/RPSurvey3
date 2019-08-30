@@ -34,7 +34,11 @@ namespace RPSurvey3.Models
         public async Task<IActionResult> Index()
 
         {
-            var questions = await _db.Question.Include(m => m.Section).Include(m => m.SubSection).ToListAsync();
+            var questions = await _db.Question.Include(m => m.Section)
+                .OrderBy(m => m.Section)
+                .Include(m => m.SubSection)
+                .ToListAsync();
+
             return View(questions);
         }
 
