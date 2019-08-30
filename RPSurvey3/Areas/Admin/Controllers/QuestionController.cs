@@ -37,6 +37,7 @@ namespace RPSurvey3.Models
             var questions = await _db.Question.Include(m => m.Section)
                 .OrderBy(m => m.Section)
                 .Include(m => m.SubSection)
+                .OrderBy(m => m.SubSection)
                 .ToListAsync();
 
             return View(questions);
