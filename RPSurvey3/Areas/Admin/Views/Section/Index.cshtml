@@ -26,8 +26,11 @@
                     <th>
                         @Html.DisplayNameFor(m => m.Name)
                     </th>
-                    <th></th>
-                    <th></th>
+                    <th>
+                    </th>
+                    <th>
+                      @Html.DisplayNameFor(m => m.DisplayOrder)
+                    </th>
                 </tr>
                 @foreach (var item in Model)
                 {
@@ -35,6 +38,10 @@
                         <td>
                             @Html.DisplayFor(m => item.Name)
                         </td>
+                      <td></td>
+                      <td>
+                        @Html.DisplayFor(m=>item.DisplayOrder)
+                      </td>
                         <td>
                             <partial name="_TableButtonPartial" model="item.Id" />
                         </td>

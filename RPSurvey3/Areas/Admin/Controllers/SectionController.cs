@@ -94,5 +94,23 @@ namespace RPSurvey3.Areas.Admin.Controllers
             }
             return View(section);
         }
+
+        //GET --  Details
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var section = await _db.Section.FindAsync(id);
+            if (section == null)
+            {
+                return NotFound();
+            }
+
+            return View(section);
+
+        }
+
     }
 }

@@ -17,5 +17,8 @@ namespace RPSurvey3.Models
 
         [ForeignKey("SectionId")]
         public virtual Section Section { get; set; }
+
+        public int DisplayOrder { get; set; }
+
     }
 }

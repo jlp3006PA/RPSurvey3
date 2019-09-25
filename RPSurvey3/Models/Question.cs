@@ -27,5 +27,8 @@ namespace RPSurvey3.Models
 
         [ForeignKey("SubSectionId")]
         public virtual SubSection SubSection { get; set; }
+
+        public int DisplayOrder { get; set; }
+
     }
 }
