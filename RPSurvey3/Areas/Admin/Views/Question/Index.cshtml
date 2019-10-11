@@ -11,50 +11,42 @@
 
   <div class="row">
     <div class="col-6">
-      <h2 class="text-info">List of Questions</h2>
+      <h2 class="text-primary">List of Questions</h2>
     </div>
     <div class="col-6 text-right">
       <partial name="_CreateButtonPartial" />
     </div>
   </div>
   <br />
-  <div>
+  <div class="w-auto">
     @if (Model.Count() > 0)
     {
-      <table class="table table-striped border">
-        <tr class="table-secondary">
-          <th style="width:60%">
-            @Html.DisplayNameFor(m => m.SurveyQuestion)
-          </th>
-          <th>
-            @Html.DisplayNameFor(m => m.Section)
-          </th>
-          <th>
-            @Html.DisplayNameFor(m => m.SubSection)
-          </th>
-          <th>
-            @Html.DisplayNameFor(m => m.DisplayOrder)
+      <table class="table table-striped border table-sm">
+        <thead >
+          <tr>
+            <th>@Html.DisplayNameFor(m => m.SurveyQuestion)</th>
 
-          </th>
-          <th></th>
-        </tr>
+            <th>@Html.DisplayNameFor(m => m.SectionId)</th>
 
-        @foreach (var item in Model)
+            <th>@Html.DisplayNameFor(m => m.SubSectionId) </th>
+
+            <th> @Html.DisplayNameFor(m => m.DisplayOrder)  </th>
+            <th></th>
+          </tr>
+        </thead>
+
+        @foreach (var item in Model.OrderBy(i => i.DisplayOrder))
         {
           <tr>
-            <td>
-              @Html.DisplayFor(m => item.SurveyQuestion)
-            </td>
-            <td>
-              @Html.DisplayFor(m => item.Section.Name)
-            </td>
-            <td>
-              @Html.DisplayFor(m => item.SubSection.Name)
-            </td>
-            <th>
-              @Html.DisplayFor(m => item.DisplayOrder)
+            <td>@Html.DisplayFor(m => item.SurveyQuestion)</td>
 
-            </th>
+            <td>
+              @Html.DisplayFor(m => item.Section.Name)</td>
+
+            <td>@Html.DisplayFor(m => item.SubSection.Name)</td>
+
+            <td>@Html.DisplayFor(m => item.DisplayOrder)</td>
+
             <td>
               <partial name="_TableButtonPartial" model="item.Id" />
             </td>
@@ -64,7 +56,7 @@
     }
     else
     {
-      <p>No Questions items in database...</p>
+      <p>No Questions in database...</p>
     }
   </div>
 </div>

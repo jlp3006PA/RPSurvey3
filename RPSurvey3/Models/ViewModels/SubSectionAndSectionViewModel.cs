@@ -10,6 +10,8 @@ namespace RPSurvey3.Models.ViewModels
 
         public List<string> SubSectionList { get; set; }
 
+        //public int DisplayOrder { get; set; }
+
         public string StatusMessage { get; set; }
     }
 }

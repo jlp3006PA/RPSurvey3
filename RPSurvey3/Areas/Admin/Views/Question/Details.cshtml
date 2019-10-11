@@ -1,0 +1,64 @@
+﻿@model RPSurvey3.Models.ViewModels.QuestionViewModel
+
+@{
+  ViewData["Title"] = "Details";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1 class="text-primary"> Question Details</h1>
+<br />
+
+<div class="border backgroundWhite">
+  <fieldset disabled>
+
+    <input type="hidden" asp-for="Question.Id" />
+
+    <div class="form-group row">
+      <div class="col-2">
+        <label asp-for="Question.SurveyQuestion" class="custom-label"></label>
+      </div>
+      <div class="col-5">
+        @Html.TextAreaFor(m => m.Question.SurveyQuestion, new { style = "width: 700px; height:auto;" })
+      </div>
+    </div>
+
+    @* -------------Select Section----------------------------------- *@
+
+    <div class="form-group row">
+      <div class="col-2">
+        <label asp-for="Question.Section.Name" class="col-form-label"></label>
+      </div>
+      <div class="col-5">
+        <input asp-for="Question.Section.Name" class="form-control"></input>
+      </div>
+    </div>
+    @* ---------------Select SubSection-------------------------------- *@
+
+    <div class="form-group row">
+      <div class="col-2">
+        <label asp-for="Question.SubSection.Name" class="col-form-label"></label>
+      </div>
+      <div class="col-5">
+        <input asp-for="Question.SubSection.Name" class="form-control"></input>
+      </div>
+    </div>
+
+    @* ------------Display Order of Question----------- *@
+    <div class="form-group row">
+      <div class="col-2">
+        <label asp-for="Question.DisplayOrder" class="col-form-label"></label>
+      </div>
+      <div class="col-2">
+        <input asp-for="Question.DisplayOrder" class="form-control" />
+      </div>
+    </div>
+
+  </fieldset>
+
+  <div class="form-group row">
+        <div class="col-5 offset-2">
+      <partial name="_DetailsBackToList" model="Model.Question.Id" />
+    </div>
+  </div>
+</div>

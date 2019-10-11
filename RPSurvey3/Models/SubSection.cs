@@ -1,5 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RPSurvey3.Models
 {
@@ -17,6 +21,14 @@ namespace RPSurvey3.Models
 
         [ForeignKey("SectionId")]
         public virtual Section Section { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+        public string ModifiedBy { get; set; }
+
+        public DateTime ModifiedDate { get; set; }
 
         public int DisplayOrder { get; set; }
 

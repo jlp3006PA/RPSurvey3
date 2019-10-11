@@ -7,9 +7,14 @@ namespace RPSurvey3.Models.ViewModels
 {
     public class QuestionViewModel
     {
-        public Question Question { get; set; }
         public IEnumerable<Section> Section { get; set; }
 
         public IEnumerable<SubSection> SubSection { get; set; }
+
+        public Question Question { get; set; }
+
+        public List<string> QuestionList { get; set; }
+
+        public string StatusMessage { get; set; }
     }
 }

@@ -18,17 +18,18 @@ namespace RPSurvey3.Models
 
         public int Response { get; set; }
 
+        [Display(Name = "Section")]
         public int SectionId { get; set; }
 
         [ForeignKey("SectionId")]
         public virtual Section Section { get; set; }
 
+        [Display(Name = "SubSection")]
         public int SubSectionId { get; set; }
 
         [ForeignKey("SubSectionId")]
         public virtual SubSection SubSection { get; set; }
 
         public int DisplayOrder { get; set; }
-
     }
 }

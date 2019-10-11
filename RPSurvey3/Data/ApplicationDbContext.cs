@@ -19,5 +19,10 @@ namespace RPSurvey3.Data
         public DbSet<SubSection> SubSection { get; set; }
 
         public DbSet<Question> Question { get; set; }
+
+       // public DbSet<Responses> Responses { get; set; }
+
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
     }
 }

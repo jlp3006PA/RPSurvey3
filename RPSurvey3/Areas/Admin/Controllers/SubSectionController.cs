@@ -39,7 +39,7 @@ namespace RPSurvey3.Areas.Admin.Controllers
             {
                 SectionList = await _db.Section.ToListAsync(),
                 SubSection = new Models.SubSection(),
-                SubSectionList = await _db.SubSection.OrderBy(p => p.Name).Select(p => p.Name).Distinct().ToListAsync(),
+                SubSectionList = await _db.SubSection.OrderBy(p => p.DisplayOrder).Select(p => p.Name).Distinct().ToListAsync(),
             };
 
             return View(model);
@@ -52,7 +52,7 @@ namespace RPSurvey3.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var doesSubSectionExists = _db.SubSection.Include(s => s.Section).Where(s => s.Name == model.SubSection.Name && s.Section.Id == model.SubSection.SectionId);
+                var doesSubSectionExists = _db.SubSection.Include(s => s.Section).Where(s => s.Name == model.SubSection.Name && s.Section.Id == model.SubSection.SectionId).Include(o=>o.DisplayOrder).Where(s=>s.DisplayOrder==model.SubSection.DisplayOrder);
 
                 if (doesSubSectionExists.Count() > 0)
                 {
@@ -87,7 +87,7 @@ namespace RPSurvey3.Areas.Admin.Controllers
             return Json(new SelectList(subSection, "Id", "Name"));
         }
 
-        //GET - EDIT
+        //GET - EDIT  =============================
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -121,19 +121,20 @@ namespace RPSurvey3.Areas.Admin.Controllers
             {
                 var doesSubSectionExists = _db.SubSection.Include(s => s.Section).Where(s => s.Name == model.SubSection.Name && s.Section.Id == model.SubSection.SectionId);
 
-                if (doesSubSectionExists.Count() > 0)
-                {
-                    //Error
-                    StatusMessage = "Error : SubSection exists under " + doesSubSectionExists.First().Section.Name + " section. Please use another name.";
-                }
-                else
-                {
+                //if (doesSubSectionExists.Count() > 0)
+                //{
+                //    //Error
+                //    //StatusMessage = "Error : SubSection exists under " + doesSubSectionExists.First().Section.Name + " section. Please use another name.";
+                //}
+                //else
+                //{
                     var subSecFromDb = await _db.SubSection.FindAsync(model.SubSection.Id);
                     subSecFromDb.Name = model.SubSection.Name;
+                    subSecFromDb.DisplayOrder = model.SubSection.DisplayOrder;
 
                     await _db.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
-                }
+                //}
             }
             SubSectionAndSectionViewModel modelVM = new SubSectionAndSectionViewModel()
             {
@@ -142,7 +143,6 @@ namespace RPSurvey3.Areas.Admin.Controllers
                 SubSectionList = await _db.SubSection.OrderBy(p => p.Name).Select(p => p.Name).ToListAsync(),
                 StatusMessage = StatusMessage
             };
-            // modelVM.SubSection.Id = id;
             return View(modelVM);
         }
 

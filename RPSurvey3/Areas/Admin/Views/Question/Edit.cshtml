@@ -2,15 +2,17 @@
 
 @using RPSurvey3.Extensions
 @{
-  ViewData["Title"] = "Create";
+  ViewData["Title"] = "Edit";
 }
 
-<h1 class="text-primary">Create Question</h1>
+<h1 class="text-primary">Edit Question</h1>
 
 <br />
-<form method="post" asp-action="Create">
- 
-  <div class="border backgroundWhite">
+<form method="post" class="text-primary" asp-action="Create">
+   <div class="border backgroundWhite">
+    <input type="hidden" asp-for="Question.Id" />
+
+
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     @* ------------------Insert Question------------------------------------------------------------- *@
@@ -58,7 +60,7 @@
 
     <div class="form-group row">
       <div class="col-5 offset-2">
-        <partial name="_CreateAndBackToListButton" />
+        <partial name="_EditAndBackToListButton" model="Model.Question.Id" />
       </div>
     </div>
   </div>

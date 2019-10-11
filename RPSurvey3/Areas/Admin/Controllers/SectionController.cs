@@ -95,6 +95,20 @@ namespace RPSurvey3.Areas.Admin.Controllers
             return View(section);
         }
 
+        //POST Delete
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var section = await _db.Section.SingleOrDefaultAsync(m => m.Id == id);
+
+            _db.Section.Remove(section);
+
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+        }
+
         //GET --  Details
         public async Task<IActionResult> Details(int? id)
         {

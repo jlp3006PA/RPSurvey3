@@ -19,8 +19,7 @@ namespace RPSurvey3.Models
         [BindProperty]
         public QuestionViewModel QuestionVM { get; set; }
 
-        public QuestionController(ApplicationDbContext db,
-                                  IHostingEnvironment hostingEnvironment)
+        public QuestionController(ApplicationDbContext db, IHostingEnvironment hostingEnvironment)
         {
             _db = db;
             _hostingEnvironment = hostingEnvironment;
@@ -31,25 +30,27 @@ namespace RPSurvey3.Models
             };
         }
 
+        //Get--Index view
         public async Task<IActionResult> Index()
 
         {
-            var questions = await _db.Question.Include(m => m.Section)
-                .OrderBy(m => m.Section)
+            var questions = await _db.Question
+                .Include(m => m.Section)
+                .OrderBy(m => m.Section.DisplayOrder)
                 .Include(m => m.SubSection)
-                .OrderBy(m => m.SubSection)
+                .OrderBy(m => m.SubSection.DisplayOrder)
                 .ToListAsync();
 
             return View(questions);
         }
 
-        //Get - Create
         //GET - CREATE
         public IActionResult Create()
         {
             return View(QuestionVM);
         }
 
+        //Post-Create
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePOST()
@@ -64,34 +65,107 @@ namespace RPSurvey3.Models
             _db.Question.Add(QuestionVM.Question);
             await _db.SaveChangesAsync();
 
-            //Work on the image saving section
+            return RedirectToAction(nameof(Index));
+        }
 
-            //string webRootPath = _hostingEnvironment.WebRootPath;
-            //var files = HttpContext.Request.Form.Files;
+        //===================================================================
+        //GET - Edit
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            //var questionFromDb = await _db.Question.FindAsync(QuestionVM.Question.Id);
+            QuestionVM.Question = await _db.Question.Include(m => m.Section).Include(m => m.SubSection).SingleOrDefaultAsync(m => m.Id == id);
+            QuestionVM.SubSection = await _db.SubSection.Where(s => s.SectionId == QuestionVM.Question.SectionId).ToListAsync();
 
-            //if (files.Count > 0)
-            //{
-            //    //files has been uploaded
-            //    var uploads = Path.Combine(webRootPath, "images");
-            //    var extension = Path.GetExtension(files[0].FileName);
+            if (QuestionVM.Question == null)
+            {
+                return NotFound();
+            }
+            return View(QuestionVM);
+        }
 
-            //    using (var filesStream = new FileStream(Path.Combine(uploads, QuestionVM.Question.Id + extension), FileMode.Create))
-            //    {
-            //        files[0].CopyTo(filesStream);
-            //    }
-            //    questionFromDb.Image = @"\images\" + QuestionVM.Question.Id + extension;
-            //}
-            //else
-            //{
-            //    //no file was uploaded, so use default
-            //    var uploads = Path.Combine(webRootPath, @"images\" + SD.DefaultFoodImage);
-            //    System.IO.File.Copy(uploads, webRootPath + @"\images\" + QuestionVM.Question.Id + ".png");
-            //    questionFromDb.Image = @"\images\" + QuestionVM.Question.Id + ".png";
-            //}
+        //Post-Edit
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPOST(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            QuestionVM.Question.SubSectionId = Convert.ToInt32(Request.Form["SubSectionId"].ToString());
+
+            if (!ModelState.IsValid)
+            {
+                QuestionVM.SubSection = await _db.SubSection.Where(s => s.SectionId == QuestionVM.Question.SectionId).ToListAsync();
+
+                return View(QuestionVM);
+            }
+
+            var questionFromDb = await _db.Question.FindAsync(QuestionVM.Question.Id);
+
+            questionFromDb.SurveyQuestion = QuestionVM.Question.SurveyQuestion;
+            questionFromDb.SectionId = QuestionVM.Question.SectionId;
+            questionFromDb.SubSectionId = QuestionVM.Question.SubSectionId;
+            questionFromDb.DisplayOrder = QuestionVM.Question.DisplayOrder;
 
             await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        //GET : Details Question
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            QuestionVM.Question = await _db.Question.Include(m => m.Section).Include(m => m.SubSection).SingleOrDefaultAsync(m => m.Id == id);
+
+            if (QuestionVM.Question == null)
+            {
+                return NotFound();
+            }
+
+            return View(QuestionVM);
+        }
+
+        //GET : Delete Question
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            QuestionVM.Question = await _db.Question.Include(m => m.Section).Include(m => m.SubSection).SingleOrDefaultAsync(m => m.Id == id);
+
+            if (QuestionVM.Question == null)
+            {
+                return NotFound();
+            }
+
+            return View(QuestionVM);
+        }
+
+        //POST Delete Question
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            Question question = await _db.Question.FindAsync(id);
+
+            if (question != null)
+            {
+                _db.Question.Remove(question);
+                await _db.SaveChangesAsync();
+            }
 
             return RedirectToAction(nameof(Index));
         }
